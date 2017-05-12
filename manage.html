@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VRouter</title>
+  <link rel="stylesheet" href="semantic/dist/semantic.min.css">
+  <link rel="stylesheet" href="./custom.css">
+</head>
+<body>
+
+  <h2 class="ui blue header">osx gateway & dns</h2>
+  <div class="ui divider"></div>
+  <div class="ui list">
+    <div class="item">
+      <div class="ui green label">
+        gateway: <span id="gateway"></span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="ui green label">
+        dns: <span id="dns"></span>
+      </div>
+    </div>
+  </div>
+  <div class="ui message">
+    <div class="header">traffic route</div>
+    <p id="current-traffic"></p>
+    <button id="btn-route"class="ui button"></button>
+  </div>
+  <h2 class="ui blue header">VRouter Status</h2>
+  <div class="ui divider"></div>
+  <div class="ui list">
+    <div class="item">
+      <div class="ui green label">
+        openwrt version: <span id="openwrt-version"></span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="ui green label">
+        br-lan IP address: <span id="br-ip"></span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="ui green label">
+        VRouter IP address: <span id="eth-ip"></span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="ui green label">
+        shadowsocks-libev version: <span id="ss-version"></span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="ui green label">
+        kcptun version: <span id="kt-version"></span>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="status.js"></script>
+  <script>if (typeof module === "object") { window.module = module; module = undefined }</script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="semantic/dist/semantic.min.js"></script>
+  <script>if (window.module) module = window.module</script>
+</body>
+</html>

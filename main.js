@@ -1,23 +1,21 @@
-const {app, BrowserWindow} = require("electron")
+"use strict"
+
+const { app, BrowserWindow } = require("electron")
 const path = require("path")
 const url = require("url")
-const exec = require("child_process").exec
+const { exec } = require("child_process")
 
 let win
 
-function isVBInstalled() {
-
-}
-
 function createWindow() {
-  win = new BrowserWindow({width: 800, height: 600})
+  win = new BrowserWindow({ width: 800, height: 600 })
   win.loadURL(url.format({
     pathname: path.join(__dirname, "index.html"),
     protocol: "file",
-    slashes: true
+    slashes: true,
   }))
 
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   win.on("closed", () => {
     win = null

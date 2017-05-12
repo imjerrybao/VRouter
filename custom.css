@@ -1,4 +1,9 @@
 body {
-  font-family: "Source Han Serif SC";
+  width: 80%;
+  padding: 3% 5%;
+  font-family: Helvetica, "Source Han Serif SC";
   font-size: 14px
+}
+#btn-recheck {
+  visibility: hidden;
 }
