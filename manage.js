@@ -1,16 +1,21 @@
+/* eslint global:"$" */
 "use strict"
 
 const { exec } = require("child_process")
 const sshExec = require("ssh-exec")
 const fs = require("fs")
+const config = require("./config/config.js")
 const vrouterIP = "192.168.64.1"
 let wifiIP = ""
+let intervals = []
 
 const options = {
   user: "root",
   host: "192.168.64.1",
   key: fs.readFileSync("/Users/simon/.ssh/id_rsa"),
 }
+
+//TODO: mem leak
 
 function getDns() {
   return new Promise((resolve, reject) => {
@@ -61,28 +66,25 @@ function checkCurrentTraffic() {
     })
     .then(getRouter)
     .then((routerip) => {
-      const wifiInfo = "all network traffic route to wifi router derectly."
-      const route2vrouter = "route all traffic to vrouter"
-      const vrouterInfo = "VRouter is taking over all network traffic."
-      const route2wifi = "route all traffic to wifi"
-      let info = "err when detecting Wifi Router's IP"
-      let btn = "error"
-      const btnElement = document.getElementById("btn-route")
+      const toggle = document.getElementById("toggle-gateway")
+      const icon = document.getElementById("toggle-gateway-icon")
+      const demoDiv = document.getElementById("demo")
       if (routerip === currentGateway) {
-        info = wifiInfo
-        btn = route2vrouter
-        btnElement.classList.remove("red")
-        btnElement.classList.add("wifi", "blue")
+        toggle.dataset.content = "开始接管网络流量."
+        icon.classList.remove("pause")
+        icon.classList.add("play")
+        demoDiv.classList.remove("positive")
+        demoDiv.classList.add("negative")
+        toggleBlink(false)
       } else {
-        info = vrouterInfo
-        btn = route2wifi
-        btnElement.classList.remove("wifi", "blue")
-        btnElement.classList.add("red")
-
+        toggle.dataset.content = "停止接管网络流量, 但不关闭虚拟机."
+        icon.classList.remove("play")
+        icon.classList.add("pause")
+        // intervals = [...blinkIcon()]
+        demoDiv.classList.add("positive")
+        demoDiv.classList.remove("negative")
+        toggleBlink(true)
       }
-      // TODO: add a pictrue
-      document.getElementById("current-traffic").innerHTML = info
-      btnElement.innerHTML = btn
     })
 }
 
@@ -112,8 +114,8 @@ function changeDns(ip) {
 
 function toggleTraffic() {
   let ip = ""
-  const btnRoute = document.getElementById("btn-route")
-  if (btnRoute.classList.contains("wifi")) {
+  const icon = document.getElementById("toggle-gateway-icon")
+  if (icon.classList.contains("play")) {
     ip = vrouterIP
   } else {
     ip = wifiIP
@@ -181,10 +183,36 @@ function getOpenwrt() {
   })
 }
 
+function toggleBlink(arg) {
+  const exchangeIcons = document.getElementsByClassName("ui exchange icon")
+  if (arg) {
+    ;[...exchangeIcons].forEach((icon) => {
+      let interval = setInterval(() => {
+        setTimeout(() => {
+          $(icon).transition("pulse")
+          icon.classList.toggle("green")
+        }, Math.random() * 2000)
+      }, 2000)
+      intervals.push(interval)
+    })
+  } else {
+    intervals.forEach(interval => clearInterval(interval))
+    intervals = []
+    setTimeout(() => {
+      ;[...exchangeIcons].forEach((icon) => {
+        if (icon.classList.contains("green")) {
+          icon.classList.remove("green")
+        }
+      })
+    }, 2000)
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   checkCurrentTraffic()
+  // blinkIcon()
 
-  document.getElementById("btn-route").addEventListener("click", () => {
+  document.getElementById("toggle-gateway").addEventListener("click", () => {
     toggleTraffic()
   })
 
@@ -198,4 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   getOpenwrt().then(message => document.getElementById("openwrt-version").innerHTML = message)
 
+  $(".tabular.menu .item").tab()
+  $("select.dropdown").dropdown()
+  $(".ui.button").popup()
 })

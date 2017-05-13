@@ -7,60 +7,219 @@
   <link rel="stylesheet" href="./custom.css">
 </head>
 <body>
+  <div class="ui top attached tabular menu">
+    <a class="item active" data-tab="status">
+      <i class="dashboard icon"></i>
+      Status
+    </a>
+    <a class="item" data-tab="vrouter-mode">
+      <i class="configure icon"></i>
+      VRouter Mode
+    </a>
+    <a class="item" data-tab="custom-rules">
+      <i class="filter icon"></i>
+      Custom Rules
+    </a>
+    <a class="item" data-tab="system">
+      <i class="linux icon"></i>
+      System
+    </a>
+  </div>
+  <div id="status-tab" class="ui bottom attached tab segment active" data-tab="status">
+    <div id="logo">
+      <img src="vrouter.png" alt="">
+    </div>
+    <div id="demo" class="ui message">
+      <div id="demonstration">
+        <i class="ui big laptop icon"></i>
+        <i class="ui small exchange icon"></i>
+        <i class="ui small exchange icon"></i>
+        <i class="ui big cube icon"></i>
+        <i class="ui small exchange icon"></i>
+        <i class="ui small exchange icon"></i>
+        <i class="ui big wifi icon"></i>
+      </div>
+    </div>
+    <div class="ui buttons">
+      <button id="toggle-gateway" class="ui teal button" data-content="">
+        <i id="toggle-gateway-icon" class="pause icon"></i>
+      </button>
+      <div class="or"></div>
+      <button id="toggle-vrouter" class="ui negative button" data-content="">
+        <i id="toggle-vrouter-icon" class="power icon"></i>
+      </button>
+    </div>
+  </div>
+  <div class="ui bottom attached tab segment" data-tab="vrouter-mode">
+    <h2 class="ui blue header">Proxy Chains</h2>
+    <div class="ui divider"></div>
+    <form class="ui form">
+      <div class="field">
+        <label>Proxy Chains</label>
+        <select id="proxy-chains" class="ui dropdown" name="proxy-chains">
+          <option value="">Choose Proxy Chains</option>
+          <option value="shadowsocks">Shadowsocks only</option>
+          <option value="shadowsocks-kcptun">Shadowsocks + Kcptun</option>
+        </select>
+      </div>
+      <!-- <div class="fields"> -->
+        <div class="six wide field">
+          <label for="server">Server</label>
+          <input id="server" name="server" type="text">
+        </div>
+        <div class="six wide field">
+          <label for="remote-port">Remote Port</label>
+          <input id="remote-port" name="remote-port" type="text">
+        </div>
+        <div class="six wide icon field">
+          <label for="password">Password</label>
+          <div class="ui icon input">
+            <input id="password" name="password" type="password">
+            <i class="unhide link icon"></i>
+          </div>
+        </div>
+        <div class="six wide field">
+          <label for="encrypt">Encrypt Method</label>
+          <input id="encrypt" name="encryp" type="text">
+        </div>
+        <div class="field">
+          <label for="kcptun">Kcptun Options</label>
+          <input id="kcptun" name="kcptun" type="text">
+        </div>
+        <!-- </div> -->
+      <div class="field">
+        <label>Route Mode</label>
+        <select id="bypass-mode" class="ui dropdown" name="bypass-mode">
+          <option value="">Select Route Mode</option>
+          <option value="all">All</option>
+          <option value="bypass-lan">Bypass LAN</option>
+          <option value="bypass-china">Bypass mainland China</option>
+          <option value="bypass-lan-china">Bypass LAN & mainland China</option>
+          <option value="gfw-list">GWF List</option>
+        </select>
+      </div>
+      <button class="ui primary button">Edit</button>
+      <button class="ui primary button">Save and Apply</button>
+    </form>
 
-  <h2 class="ui blue header">osx gateway & dns</h2>
-  <div class="ui divider"></div>
-  <div class="ui list">
-    <div class="item">
-      <div class="ui green label">
-        gateway: <span id="gateway"></span>
-      </div>
-    </div>
-    <div class="item">
-      <div class="ui green label">
-        dns: <span id="dns"></span>
-      </div>
-    </div>
+    <!-- <h2 class="ui blue header">List Mode</h2> -->
+    <!-- <div class="ui divider"></div> -->
+
   </div>
-  <div class="ui message">
-    <div class="header">traffic route</div>
-    <p id="current-traffic"></p>
-    <button id="btn-route"class="ui button"></button>
+  <div class="ui bottom attached tab segment" data-tab="custom-rules">
+    <h2 class="ui blue header">List Details</h1>
+    <div class="ui divider"></div>
+    <div class="ui top attached tabular menu">
+      <a class="item" data-tab="custom-rules/blacklist">blacklist</a>
+      <a class="item" data-tab="custom-rules/whitelist">whitelist</a>
+      <a class="item" data-tab="custom-rules/lans">lans</a>
+    </div>
+    <div class="ui bottom attached active tab segment" data-tab="custom-rules/blacklist"></div>
+    <div class="ui bottom attached tab segment" data-tab="custom-rules/whitelist"></div>
+    <div class="ui bottom attached tab segment" data-tab="custom-rules/lans"></div>
   </div>
-  <h2 class="ui blue header">VRouter Status</h2>
-  <div class="ui divider"></div>
-  <div class="ui list">
-    <div class="item">
-      <div class="ui green label">
-        openwrt version: <span id="openwrt-version"></span>
+  <div class="ui bottom attached tab segment" data-tab="system">
+    <h2 class="ui blue header">OSX gateway & dns</h2>
+    <div class="ui divider"></div>
+    <div class="ui list">
+      <div class="item">
+        <div class="ui label">
+          gateway: <span id="gateway"></span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui label">
+          dns: <span id="dns"></span>
+        </div>
       </div>
     </div>
-    <div class="item">
-      <div class="ui green label">
-        br-lan IP address: <span id="br-ip"></span>
+    <div class="ui positive message">
+      <div class="header">traffic route</div>
+      <p id="current-traffic"></p>
+      <button id="btn-route"class="ui button"></button>
+    </div>
+    <h2 class="ui blue header">VRouter Status</h2>
+    <div class="ui divider"></div>
+    <div class="ui list">
+      <div class="item">
+        <div class="ui label">
+          openwrt version: <span id="openwrt-version"></span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui label">
+          br-lan IP address: <span id="br-ip"></span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui label">
+          VRouter IP address: <span id="eth-ip"></span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui label">
+          shadowsocks-libev version: <span id="ss-version"></span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui label">
+          kcptun version: <span id="kt-version"></span>
+        </div>
       </div>
     </div>
-    <div class="item">
-      <div class="ui green label">
-        VRouter IP address: <span id="eth-ip"></span>
-      </div>
-    </div>
-    <div class="item">
-      <div class="ui green label">
-        shadowsocks-libev version: <span id="ss-version"></span>
-      </div>
-    </div>
-    <div class="item">
-      <div class="ui green label">
-        kcptun version: <span id="kt-version"></span>
-      </div>
-    </div>
+    <h2 class="ui blue header">Services</h2>
+    <div class="ui divider"></div>
+    <table class="ui definition table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Version</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>openwrt</td>
+          <td>demo</td>
+          <td>demo</td>
+        </tr>
+        <tr>
+          <td>shadowsocks</td>
+          <td>demo</td>
+          <td>demo</td>
+        </tr>
+        <tr>
+          <td>kcptun</td>
+          <td>demo</td>
+          <td>demo</td>
+        </tr>
+        <tr>
+          <td>dnsmasq</td>
+          <td>demo</td>
+          <td>demo</td>
+        </tr>
+        <tr>
+          <td>iptables</td>
+          <td>demo</td>
+          <td>demo</td>
+        </tr>
+        <tr>
+          <td>ipset</td>
+          <td>demo</td>
+          <td>demo</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="ui blue header">SSH Keyfile</h2>
+    <div class="ui divider"></div>
+    <button class="ui button">regenerate</button>
+    <button class="ui button">restart</button>
+    <button class="ui button">shutdown</button>
   </div>
-  </div>
-  <script src="status.js"></script>
   <script>if (typeof module === "object") { window.module = module; module = undefined }</script>
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="semantic/dist/semantic.min.js"></script>
   <script>if (window.module) module = window.module</script>
+  <script src="manage.js"></script>
 </body>
 </html>
